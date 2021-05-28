@@ -26,5 +26,12 @@ New nodes on the network are verified using remote attestation and TEEs are impl
 
 ### SNIP721 
 
+We will be going through the code in `/src`. The order is all follows-
+1. `connect.js`
+2. `create_account.js`
+3. `query.js`
+4. `transfer.js`
 
+_______
 
+#### Connecting to a secret node using DataHub
