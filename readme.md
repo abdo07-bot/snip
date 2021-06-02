@@ -34,7 +34,7 @@ We will be going through the code in `/src`. The order is all follows-
 
 _______
 
-#### Creating a connection
+#### Connecting to a Secret Network node
 
 We can use datahub to connect to a secret node. You'll need secretJS, Dotenv on Node, Docker and Rust. `npm i` should fix the npm dependencies. Once you are have setup your node on DataHub, it makes sense to get your API key and Chain ID.
 
@@ -48,3 +48,16 @@ SECRET_CHAIN_ID=holodeck-2
 > Consider adding your `.env` to your `.gitignore`.
 
 Running `connect.js` using `node` should help you check your connection with a Secret Node.
+
+#### Creating an account
+
+Run `create_account.js`, this should connect give you an address and a mnemonic. Add these to the `.env` file so that your file looks like the following codeblock.
+
+```
+SECRET_REST_URL='https://secret-holodeck-2--lcd--full.datahub.figment.io/apikey/<YOUR API KEY>/'
+SECRET_CHAIN_ID=holodeck-2
+ADDRESS='<YOUR ADDRESS>'
+MNEMONIC='<YOUR MNEMONIC>'
+```
+
+Get the testnet tokens by going [here](https://faucet.secrettestnet.io/) and entering your address.
