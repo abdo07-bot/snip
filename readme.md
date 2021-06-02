@@ -61,3 +61,77 @@ MNEMONIC='<YOUR MNEMONIC>'
 ```
 
 Get the testnet tokens by going [here](https://faucet.secrettestnet.io/) and entering your address.
+
+Running `query.js` will help you query Secret Network Blockchain data. `transfer.js` should commit a transaction on the testnet for you.
+
+#### Writing and deploying a Secret Contract
+
+```shell
+# Install Rust 
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+
+# Add rustup target wasm32 for both stable and nightly
+rustup default stable
+rustup target list --installed
+rustup target add wasm32-unknown-unknown
+
+rustup install nightly
+rustup target add wasm32-unknown-unknown --toolchain nightly
+
+apt install build-essential
+
+cargo install cargo-generate --features vendored-openssl
+```
+
+This will install the tools we need. You can try deploying the contract in `mysimplecounter` or develop one from scratch. We can do a `cargo generate` from a the secret template for contract.
+
+```
+cargo generate --git https://github.com/enigmampc/secret-template --name demo
+cp .env demo
+cd demo
+```
+
+Now you can compile the code.
+
+```
+cargo wasm
+```
+
+You cna get the secret-contract-optimizer from [here](https://hub.docker.com/r/enigmampc/secret-contract-optimizer} or following the code below.
+
+```shell
+docker run --rm -v "$(pwd)":/contract \
+  --mount type=volume,source="$(basename "$(pwd)")_cache",target=/code/target \
+  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+  enigmampc/secret-contract-optimizer
+  
+  ## unpack the optimized contract
+  gunzip contract.wasm.gz  
+```
+
+In `mysimplecounter` folder, you can find the `deploy.js`, which will help you deploy your code. Copy it to your folder and run it. You should see the following.
+
+```shell
+Wallet address=secret1jeyarfXXXXXXXXXXXXX
+Uploading contract
+contract:  {
+  contractAddress: 'secret18ueXYXYYYYYYYYY',
+  logs: [ { msg_index: 0, log: '', events: [Array] } ],
+  transactionHash: '<TX_HASH>',
+  data: '<DATA>'
+}
+Querying contract for current count
+Count=101
+Updating count
+response:  {
+  logs: [ { msg_index: 0, log: '', events: [Array] } ],
+  transactionHash: '<TX2_HASH>',
+  data: Uint8Array(0) []
+}
+Querying contract for updated count
+New Count=1XX
+```
+
+Note: Replaced information with placeholder such as `secret1jeyarfXXXXXXXXXXXXX`. You should see your information accordingly.
+
